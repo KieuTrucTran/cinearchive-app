@@ -26,7 +26,8 @@ const MovieCard: FC<MovieCardProps> = (props) => {
         <img
           src={`https://image.tmdb.org/t/p/original${poster_path}`}
           alt={title}
-          className="rounded-t-lg h-80 w-full object-cover"
+          loading="lazy"
+          className="rounded-t-lg w-full object-cover"
         />
         <div className="p-5">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
