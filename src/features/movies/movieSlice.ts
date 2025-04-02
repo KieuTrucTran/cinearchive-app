@@ -17,16 +17,33 @@ export const getMovies = createAsyncThunk(
   }
 );
 
+// get more details
+export const getMovieDetails = createAsyncThunk(
+  "movies/getMovieDetails",
+  async (movieId: string | undefined, thunkApi) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_MOVIE_KEY}`
+      );
+      return await response.json();
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
 interface MovieState {
   loading: boolean;
   error: null | string;
   data: null | { results: any[] };
+  movieDetails: null | any;
 }
 
 const initialState: MovieState = {
   loading: false,
   error: null,
   data: null,
+  movieDetails: null,
 };
 
 // Slice
@@ -50,7 +67,25 @@ const movieSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
+    builder.addCase(getMovieDetails.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      getMovieDetails.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.movieDetails = action.payload;
+      }
+    );
+    builder.addCase(
+      getMovieDetails.rejected,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      }
+    );
   },
 });
 
 export default movieSlice.reducer;
+export const getSelectedMovie = (state: any) => state.movies.movieDetails;
