@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { getMovies } from "../../features/movies/movieSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/storeHook";
-import MovieCard from "../MovieCard/MovieCard";
-
-import "./Home.css";
+import { getMovies } from "../features/movies/movieSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
+import MovieCard from "../components/MovieCard/MovieCard";
 
 function Home() {
   const { darkTheme, movies } = useAppSelector((state) => state);
