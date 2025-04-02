@@ -20,6 +20,9 @@ const Header = () => {
               Movies
             </span>
           </Link>
+          <Link to="/search" className="text-black-500 hover:underline">
+            Search
+          </Link>
           <div className="flex items-center lg:order-2">
             {darkTheme ? (
               <SunIcon

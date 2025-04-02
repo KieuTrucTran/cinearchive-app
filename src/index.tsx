@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Detail from "./components/Detail";
 import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
+import SearchPage from "./routes/SearchPage";
 
 import "./index.css";
 import { store } from "./store"; // central state management object of the app
@@ -20,6 +21,7 @@ root.render(
         <Routes>
           <Route path="/" element={<Header />}>
             <Route index element={<Home />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path=":movieId" element={<Detail />} />
           </Route>
         </Routes>
