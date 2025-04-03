@@ -17,8 +17,11 @@ const Header = () => {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link to="/" className="flex items-center">
             <span className="self-center text-xl font-semibold whitespace-nowrap">
-              Movies
+              CineArchive
             </span>
+          </Link>
+          <Link to="/movies" className="text-black-500 hover:underline">
+            Movies
           </Link>
           <Link to="/search" className="text-black-500 hover:underline">
             Search

@@ -7,6 +7,7 @@ import Detail from "./components/Detail";
 import Header from "./components/Header/Header";
 import Home from "./routes/HomePage";
 import SearchPage from "./routes/SearchPage";
+import MoviesPage from "./routes/MoviesPage";
 
 import "./index.css";
 import { store } from "./store"; // central state management object of the app
@@ -22,6 +23,7 @@ root.render(
           <Route path="/" element={<Header />}>
             <Route index element={<Home />} />
             <Route path="search" element={<SearchPage />} />
+            <Route path="movies" element={<MoviesPage />} />
             <Route path=":movieId" element={<Detail />} />
           </Route>
         </Routes>
