@@ -50,3 +50,33 @@ export const fetchMovieDetails = async (movieId: string) => {
   }
   return response.json();
 };
+
+export const fetchMovieCredits = async (movieId: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie credits: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const fetchWatchProviders = async (movieId: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/movie/${movieId}/watch/providers?api_key=${API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch watch providers: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const fetchSimilarMovies = async (movieId: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch similar movies: ${response.statusText}`);
+  }
+  return response.json();
+};

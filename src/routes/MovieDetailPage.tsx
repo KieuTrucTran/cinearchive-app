@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
-import { getMovieDetails } from "../features/movies/movieSlice";
+import {
+  getMovieDetails,
+  getMovieCredits,
+  getWatchProviders,
+  getSimilarMovies,
+} from "../features/movies/movieSlice";
+import MovieCard from "../components/MovieCard/MovieCard";
 
 type Genre = {
   id: number;
@@ -13,6 +19,9 @@ const MovieDetailPage = () => {
   const dispatch = useAppDispatch();
   const {
     movieDetails: movie,
+    credits,
+    providers,
+    similarMovies,
     loading,
     error,
   } = useAppSelector((state) => state.movies);
@@ -20,20 +29,15 @@ const MovieDetailPage = () => {
   useEffect(() => {
     if (movieId) {
       dispatch(getMovieDetails(movieId));
+      dispatch(getMovieCredits(movieId));
+      dispatch(getWatchProviders(movieId));
+      dispatch(getSimilarMovies(movieId));
     }
   }, [dispatch, movieId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!movie) {
-    return <div>No movie details available</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!movie) return <div>No movie details available</div>;
 
   const year = movie.release_date
     ? new Date(movie.release_date).getFullYear()
@@ -48,16 +52,41 @@ const MovieDetailPage = () => {
       />
       <div className="lg:ml-8">
         <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
-        <p className="text-gray-700 dark:text-gray-300 mb-4">{year}</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-4">Year: {year}</p>
+        <h2 className="text font-bold mb-4">{movie.tagline}</h2>
         <p className="text-gray-700 dark:text-gray-300 mb-6">
           {movie.overview}
         </p>
+
         <h2 className="text-xl font-semibold mb-2">Genres</h2>
         <ul className="list-disc list-inside mb-6">
-          {movie && movie.genres && movie.genres.map((genre: Genre) => (
+          {movie.genres.map((genre) => (
             <li key={genre.id}>{genre.name}</li>
           ))}
         </ul>
+
+        <h2 className="text-xl font-semibold mb-2">Cast</h2>
+        <ul className="list-disc list-inside mb-6">
+          {credits.slice(0, 5).map((cast) => (
+            <li key={cast.id}>
+              {cast.name} as {cast.character}
+            </li>
+          ))}
+        </ul>
+
+        <h2 className="text-xl font-semibold mb-2">Watch Providers</h2>
+        <ul className="list-disc list-inside mb-6">
+          {providers && providers.US && providers.US.flatrate ? (
+            providers.US.flatrate.map(
+              (provider: { provider_id: number; provider_name: string }) => (
+                <li key={provider.provider_id}>{provider.provider_name}</li>
+              )
+            )
+          ) : (
+            <li>No providers available</li>
+          )}
+        </ul>
+
         {movie.homepage && (
           <a
             href={movie.homepage}
@@ -68,6 +97,19 @@ const MovieDetailPage = () => {
             Watch Trailer
           </a>
         )}
+
+        <h2 className="text-xl font-semibold mb-2">Similar Movies</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {similarMovies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              poster_path={movie.poster_path}
+              release_date={movie.release_date}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

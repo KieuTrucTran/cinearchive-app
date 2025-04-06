@@ -43,12 +43,37 @@ export const getMovieDetails = createAsyncThunk<MovieDetail, string>(
   }
 );
 
+export const getMovieCredits = createAsyncThunk(
+  "movies/getMovieCredits",
+  async (movieId: string) => {
+    const data = await movieApi.fetchMovieCredits(movieId);
+    return data.cast;
+  }
+);
+
+export const getWatchProviders = createAsyncThunk(
+  "movies/getWatchProviders",
+  async (movieId: string) => {
+    const data = await movieApi.fetchWatchProviders(movieId);
+    return data.results;
+  }
+);
+
+export const getSimilarMovies = createAsyncThunk(
+  "movies/getSimilarMovies",
+  async (movieId: string) => {
+    const data = await movieApi.fetchSimilarMovies(movieId);
+    return data.results;
+  }
+);
+
 export interface MovieDetail {
   title: string;
   overview: string;
   poster_path: string;
   release_date: string;
   genres: { id: number; name: string }[];
+  tagline: string;
   homepage: string;
 }
 
@@ -61,6 +86,9 @@ interface MovieState {
   loading: boolean;
   error: null | string;
   darkTheme: boolean;
+  credits: any[];
+  providers: any | null;
+  similarMovies: any[];
 }
 
 const initialState: MovieState = {
@@ -72,6 +100,9 @@ const initialState: MovieState = {
   loading: false,
   error: null,
   darkTheme: false,
+  credits: [],
+  providers: null,
+  similarMovies: [],
 };
 
 // Manages the state of the movies
@@ -164,6 +195,18 @@ const movieSlice = createSlice({
       .addCase(getMovieDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch movie details";
+      });
+
+    // Movie credits
+    builder
+      .addCase(getMovieCredits.fulfilled, (state, action) => {
+        state.credits = action.payload;
+      })
+      .addCase(getWatchProviders.fulfilled, (state, action) => {
+        state.providers = action.payload;
+      })
+      .addCase(getSimilarMovies.fulfilled, (state, action) => {
+        state.similarMovies = action.payload;
       });
   },
 });
