@@ -9,12 +9,16 @@ interface MovieCardProps {
   id: number;
 }
 
-const MovieCard: FC<MovieCardProps> = (props) => {
-  const { poster_path, title, release_date, id } = props;
+const MovieCard: FC<MovieCardProps> = ({
+  poster_path,
+  title,
+  release_date,
+  id,
+}) => {
   const year = release_date ? new Date(release_date).getFullYear() : "N/A";
 
   return (
-    <Link to={`${id}`}>
+    <Link to={`/movie/${id}`}>
       <div
         className="max-w-xs bg-white mx-auto rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:-translate-y-2 
      duration-200 cursor-pointer"

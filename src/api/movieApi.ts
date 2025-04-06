@@ -1,9 +1,9 @@
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = process.env.REACT_APP_MOVIE_KEY;
 
-export const fetchTrendingMovies = async () => {
+export const fetchTrendingMovies = async (timeWindow: string = "day") => {
   const response = await fetch(
-    `${API_BASE_URL}/trending/all/day?api_key=${API_KEY}`
+    `${API_BASE_URL}/trending/movie/${timeWindow}?api_key=${API_KEY}`
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch trending movies: ${response.statusText}`);
