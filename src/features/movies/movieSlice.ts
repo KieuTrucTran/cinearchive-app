@@ -35,23 +35,29 @@ export const getUpcomingMovies = createAsyncThunk(
   }
 );
 
-// Fetch movie details
-export const getMovieDetails = createAsyncThunk(
+export const getMovieDetails = createAsyncThunk<MovieDetail, string>(
   "movies/getMovieDetails",
-  async (movieId: string | undefined) => {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_MOVIE_KEY}`
-    );
-    return response.json();
+  async (movieId: string) => {
+    const response = await movieApi.fetchMovieDetails(movieId);
+    return response as MovieDetail;
   }
 );
+
+export interface MovieDetail {
+  title: string;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+  genres: { id: number; name: string }[];
+  homepage: string;
+}
 
 interface MovieState {
   trending: any[];
   popular: any[];
   topRated: any[];
   upcoming: any[];
-  movieDetails: any | null;
+  movieDetails: MovieDetail | null;
   loading: boolean;
   error: null | string;
   darkTheme: boolean;
@@ -152,7 +158,7 @@ const movieSlice = createSlice({
         getMovieDetails.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.loading = false;
-          state.movieDetails = action.payload; // Save movie details
+          state.movieDetails = action.payload;
         }
       )
       .addCase(getMovieDetails.rejected, (state, action) => {

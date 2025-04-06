@@ -40,3 +40,13 @@ export const fetchUpcomingMovies = async () => {
   }
   return response.json();
 };
+
+export const fetchMovieDetails = async (movieId: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/movie/${movieId}?api_key=${API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie details: ${response.statusText}`);
+  }
+  return response.json();
+};

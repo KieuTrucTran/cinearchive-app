@@ -1,42 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
+import { getMovieDetails } from "../features/movies/movieSlice";
 
-interface MovieDetail {
-  title: string;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  genres: { id: number; name: string }[];
-  homepage: string;
-}
+type Genre = {
+  id: number;
+  name: string;
+};
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const dispatch = useAppDispatch();
+  const {
+    movieDetails: movie,
+    loading,
+    error,
+  } = useAppSelector((state) => state.movies);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_MOVIES_ACCESS_TOKEN}`,
-            },
-          }
-        );
-        setMovie(response.data);
-      } catch (error) {
-        console.error("Error fetching movie details:", error);
-      }
-    };
+    if (movieId) {
+      dispatch(getMovieDetails(movieId));
+    }
+  }, [dispatch, movieId]);
 
-    fetchMovieDetails();
-  }, [movieId]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   if (!movie) {
-    return <div>Loading...</div>;
+    return <div>No movie details available</div>;
   }
 
   const year = movie.release_date
@@ -58,7 +54,7 @@ const MovieDetailPage = () => {
         </p>
         <h2 className="text-xl font-semibold mb-2">Genres</h2>
         <ul className="list-disc list-inside mb-6">
-          {movie.genres.map((genre) => (
+          {movie && movie.genres && movie.genres.map((genre: Genre) => (
             <li key={genre.id}>{genre.name}</li>
           ))}
         </ul>

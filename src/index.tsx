@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Detail from "./components/Detail";
 import Header from "./components/Header/Header";
 import Home from "./routes/HomePage";
 import SearchPage from "./routes/SearchPage";
