@@ -44,8 +44,8 @@ function HomePage() {
                 key={id}
                 id={id}
                 title={title}
-                overview={overview}
                 poster_path={poster_path}
+                release_date={movie.release_date}
               />
             );
           })}
@@ -61,8 +61,8 @@ function HomePage() {
                 key={id}
                 id={id}
                 title={title}
-                overview={overview}
                 poster_path={poster_path}
+                release_date={movie.release_date}
               />
             );
           })}
@@ -78,8 +78,8 @@ function HomePage() {
                 key={id}
                 id={id}
                 title={title}
-                overview={overview}
                 poster_path={poster_path}
+                release_date={movie.release_date}
               />
             );
           })}
@@ -95,8 +95,8 @@ function HomePage() {
                 key={id}
                 id={id}
                 title={title}
-                overview={overview}
                 poster_path={poster_path}
+                release_date={movie.release_date}
               />
             );
           })}

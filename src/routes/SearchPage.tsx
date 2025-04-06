@@ -8,6 +8,7 @@ interface Movie {
   title: string;
   overview: string;
   poster_path: string;
+  release_date: string; // Added release_date property
 }
 
 const SearchPage = () => {
@@ -60,8 +61,8 @@ const SearchPage = () => {
               key={movie.id}
               id={movie.id}
               title={movie.title}
-              overview={movie.overview}
               poster_path={movie.poster_path}
+              release_date={movie.release_date}
             />
           ))
         ) : (

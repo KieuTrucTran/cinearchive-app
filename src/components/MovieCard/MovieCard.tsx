@@ -5,23 +5,19 @@ import { Link } from "react-router-dom";
 interface MovieCardProps {
   poster_path: string;
   title: string;
-  overview?: string;
+  release_date: string; // Add release_date for the year
   id: number;
 }
 
 const MovieCard: FC<MovieCardProps> = (props) => {
-  const { poster_path, title, overview, id } = props;
+  const { poster_path, title, release_date, id } = props;
+  const year = release_date ? new Date(release_date).getFullYear() : "N/A";
+
   return (
-    <Link
-      to={`${id}`}
-      onClick={() => {
-        // console.log(id);
-      }}
-    >
+    <Link to={`${id}`}>
       <div
-        className="max-w-sm bg-white mx-auto rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 hover:-translate-y-4 
-     duration-200 hover:animate-pulse cursor-pointer
-     "
+        className="max-w-xs bg-white mx-auto rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:-translate-y-2 
+     duration-200 cursor-pointer"
       >
         <img
           src={`https://image.tmdb.org/t/p/original${poster_path}`}
@@ -29,15 +25,11 @@ const MovieCard: FC<MovieCardProps> = (props) => {
           loading="lazy"
           className="rounded-t-lg w-full object-cover"
         />
-        <div className="p-5">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <div className="p-3">
+          <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
             {title}
           </h5>
-          {overview && (
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              {overview?.slice(0, 300)}...
-            </p>
-          )}
+          <p className="text-sm text-gray-700 dark:text-gray-400">{year}</p>
         </div>
       </div>
     </Link>
