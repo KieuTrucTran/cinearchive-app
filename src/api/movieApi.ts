@@ -80,3 +80,42 @@ export const fetchSimilarMovies = async (movieId: string) => {
   }
   return response.json();
 };
+
+export const fetchMoviesWithFilters = async (
+  filters: Record<string, string | number | boolean>
+) => {
+  if (!API_KEY) {
+    throw new Error("API_KEY is not defined");
+  }
+
+  const queryParams = new URLSearchParams({
+    api_key: API_KEY,
+    language: "en-US",
+    ...Object.entries(filters).reduce((acc, [key, value]) => {
+      if (
+        typeof value === "string" ||
+        typeof value === "number" ||
+        typeof value === "boolean"
+      ) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {} as Record<string, string>),
+  }).toString();
+
+  const response = await fetch(`${API_BASE_URL}/discover/movie?${queryParams}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movies: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const fetchGenres = async () => {
+  const response = await fetch(
+    `${API_BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch genres: ${response.statusText}`);
+  }
+  return response.json();
+};

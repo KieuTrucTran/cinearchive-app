@@ -1,54 +1,96 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
+import { useEffect, useState } from "react";
+import { fetchMoviesWithFilters, fetchGenres } from "../api/movieApi";
 import MovieCard from "../components/MovieCard/MovieCard";
-import {
-  getPopularMovies,
-  getTopRatedMovies,
-  getUpcomingMovies,
-} from "../features/movies/movieSlice";
 
 function MoviesPage() {
-  const { darkTheme, popular, topRated, upcoming, loading, error } =
-    useAppSelector((state) => state.movies);
-  const dispatch = useAppDispatch();
+  const [movies, setMovies] = useState<
+    { id: number; title: string; poster_path: string; release_date: string }[]
+  >([]);
+  const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [filters, setFilters] = useState({
+    sort_by: "popularity.desc",
+    with_genres: "",
+  });
+
+  const fetchMovies = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await fetchMoviesWithFilters(filters);
+      setMovies(data.results);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadGenres = async () => {
+    try {
+      const data = await fetchGenres();
+      setGenres(data.genres);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    dispatch(getPopularMovies());
-    dispatch(getTopRatedMovies());
-    dispatch(getUpcomingMovies());
-  }, [dispatch]);
+    loadGenres();
+  }, []);
 
-  if (loading) {
-    return <div>Loading movies...</div>;
-  }
+  useEffect(() => {
+    fetchMovies();
+  }, [filters]);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleFilterChange = (key: string, value: string | number) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  if (loading) return <div>Loading movies...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className={darkTheme ? "dark" : ""}>
-      <div className="dark:bg-blue-900 dark:text-white min-h-screen px-4 lg:px-12 pb-20">
-        <h2 className="text-2xl font-bold mb-6">All Movies</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-          {/* Unique prefixes to keys based on the source array */}
-          {[
-            ...popular.map((movie) => ({ ...movie, keyPrefix: "popular" })),
-            ...topRated.map((movie) => ({ ...movie, keyPrefix: "topRated" })),
-            ...upcoming.map((movie) => ({ ...movie, keyPrefix: "upcoming" })),
-          ].map((movie) => {
-            const { id, title, overview, poster_path, keyPrefix } = movie;
-            return (
-              <MovieCard
-                key={`${keyPrefix}-${id}`} // Unique keys
-                id={id}
-                title={title}
-                poster_path={poster_path}
-                release_date={movie.release_date}
-              />
-            );
-          })}
-        </div>
+    <div className="min-h-screen px-4 lg:px-12 pb-20">
+      <div className="mb-6">
+        <label>
+          Sort By:
+          <select
+            onChange={(e) => handleFilterChange("sort_by", e.target.value)}
+            value={filters.sort_by}
+          >
+            <option value="popularity.desc">Popularity</option>
+            <option value="vote_average.desc">Top Rated</option>
+          </select>
+        </label>
+        <label>
+          Genre:
+          <select
+            onChange={(e) => handleFilterChange("with_genres", e.target.value)}
+            value={filters.with_genres}
+          >
+            <option value="">All Genres</option>
+            {genres.map((genre) => (
+              <option key={genre.id} value={genre.id}>
+                {genre.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {movies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+            release_date={movie.release_date}
+          />
+        ))}
       </div>
     </div>
   );
