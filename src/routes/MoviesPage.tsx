@@ -12,6 +12,7 @@ function MoviesPage() {
   const [filters, setFilters] = useState({
     sort_by: "popularity.desc",
     with_genres: "",
+    page: 1,
   });
   const [pendingFilters, setPendingFilters] = useState(filters);
 
@@ -52,7 +53,14 @@ function MoviesPage() {
   };
 
   const applyFilters = () => {
-    setFilters(pendingFilters);
+    setFilters({ ...pendingFilters, page: 1 });
+  };
+
+  const handlePageChange = (direction: "next" | "prev") => {
+    setFilters((prev) => ({
+      ...prev,
+      page: direction === "next" ? prev.page + 1 : Math.max(prev.page - 1, 1),
+    }));
   };
 
   if (loading) return <div>Loading movies...</div>;
@@ -102,6 +110,22 @@ function MoviesPage() {
             release_date={movie.release_date}
           />
         ))}
+      </div>
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={() => handlePageChange("prev")}
+          disabled={filters.page === 1}
+          className="px-4 py-2 bg-gray-500 text-white rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>Page {filters.page}</span>
+        <button
+          onClick={() => handlePageChange("next")}
+          className="px-4 py-2 bg-gray-500 text-white rounded"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
