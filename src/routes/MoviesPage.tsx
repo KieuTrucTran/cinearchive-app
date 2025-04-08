@@ -13,6 +13,7 @@ function MoviesPage() {
     sort_by: "popularity.desc",
     with_genres: "",
   });
+  const [pendingFilters, setPendingFilters] = useState(filters);
 
   const fetchMovies = async () => {
     setLoading(true);
@@ -47,7 +48,11 @@ function MoviesPage() {
   }, [filters]);
 
   const handleFilterChange = (key: string, value: string | number) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPendingFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const applyFilters = () => {
+    setFilters(pendingFilters);
   };
 
   if (loading) return <div>Loading movies...</div>;
@@ -60,7 +65,7 @@ function MoviesPage() {
           Sort By:
           <select
             onChange={(e) => handleFilterChange("sort_by", e.target.value)}
-            value={filters.sort_by}
+            value={pendingFilters.sort_by}
           >
             <option value="popularity.desc">Popularity</option>
             <option value="vote_average.desc">Top Rated</option>
@@ -70,7 +75,7 @@ function MoviesPage() {
           Genre:
           <select
             onChange={(e) => handleFilterChange("with_genres", e.target.value)}
-            value={filters.with_genres}
+            value={pendingFilters.with_genres}
           >
             <option value="">All Genres</option>
             {genres.map((genre) => (
@@ -80,6 +85,12 @@ function MoviesPage() {
             ))}
           </select>
         </label>
+        <button
+          onClick={applyFilters}
+          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Search
+        </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {movies.map((movie) => (
