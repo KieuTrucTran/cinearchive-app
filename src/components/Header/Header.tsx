@@ -23,6 +23,9 @@ const Header = () => {
           <Link to="/movies" className="text-black-500 hover:underline">
             Movies
           </Link>
+          <Link to="/favorites" className="text-black-500 hover:underline">
+            Favorites
+          </Link>
           <Link to="/search" className="text-black-500 hover:underline">
             Search
           </Link>

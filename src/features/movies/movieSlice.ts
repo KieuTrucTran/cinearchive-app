@@ -68,6 +68,7 @@ export const getSimilarMovies = createAsyncThunk(
 );
 
 export interface MovieDetail {
+  id: number
   title: string;
   overview: string;
   poster_path: string;
