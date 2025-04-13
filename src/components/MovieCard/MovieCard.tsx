@@ -2,7 +2,10 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/storeHook";
-import { toggleFavorite } from "../../features/movies/userListsSlice";
+import {
+  toggleFavorite,
+  toggleWatchlist,
+} from "../../features/movies/userListsSlice";
 
 interface MovieCardProps {
   poster_path: string;
@@ -18,12 +21,17 @@ const MovieCard: FC<MovieCardProps> = ({
   id,
 }) => {
   const dispatch = useAppDispatch();
-  const { favorites } = useAppSelector((state) => state.userLists);
+  const { favorites, watchlist } = useAppSelector((state) => state.userLists);
 
   const isFavorite = favorites.some((movie) => movie.id === id);
+  const isInWatchlist = watchlist.some((movie) => movie.id === id);
 
   const handleFavorite = () => {
     dispatch(toggleFavorite({ id, title, poster_path, release_date }));
+  };
+
+  const handleWatchlist = () => {
+    dispatch(toggleWatchlist({ id, title, poster_path, release_date }));
   };
 
   const year = release_date ? new Date(release_date).getFullYear() : "N/A";
@@ -54,6 +62,14 @@ const MovieCard: FC<MovieCardProps> = ({
           }`}
         >
           {isFavorite ? "Unfavorite" : "Favorite"}
+        </button>
+        <button
+          onClick={handleWatchlist}
+          className={`px-4 py-2 rounded ${
+            isInWatchlist ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
+          }`}
+        >
+          {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
         </button>
       </div>
     </div>

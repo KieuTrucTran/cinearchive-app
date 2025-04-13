@@ -7,7 +7,10 @@ import {
   getWatchProviders,
   getSimilarMovies,
 } from "../features/movies/movieSlice";
-import { toggleFavorite } from "../features/movies/userListsSlice";
+import {
+  toggleFavorite,
+  toggleWatchlist,
+} from "../features/movies/userListsSlice";
 import MovieCard from "../components/MovieCard/MovieCard";
 
 type Genre = {
@@ -26,14 +29,28 @@ const MovieDetailPage = () => {
     loading,
     error,
   } = useAppSelector((state) => state.movies);
-  const { favorites } = useAppSelector((state) => state.userLists);
+  const { favorites, watchlist } = useAppSelector((state) => state.userLists);
 
   const isFavorite = favorites.some((movie) => movie.id === Number(movieId));
+  const isInWatchlist = watchlist.some((movie) => movie.id === Number(movieId));
 
   const handleFavorite = () => {
     if (movie) {
       dispatch(
         toggleFavorite({
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          release_date: movie.release_date,
+        })
+      );
+    }
+  };
+
+  const handleWatchlist = () => {
+    if (movie) {
+      dispatch(
+        toggleWatchlist({
           id: movie.id,
           title: movie.title,
           poster_path: movie.poster_path,
@@ -115,14 +132,29 @@ const MovieDetailPage = () => {
           </a>
         )}
 
-        <button
-          onClick={handleFavorite}
-          className={`px-4 py-2 rounded ${isFavorite ? "bg-red-500 text-white" : "bg-gray-300 text-black"}`}
-        >
-          {isFavorite ? "Remove from favorites" : "Add to Favorites"}
-        </button>
+        <div className="flex gap-4 mt-4">
+          <button
+            onClick={handleFavorite}
+            className={`px-4 py-2 rounded ${
+              isFavorite ? "bg-red-500 text-white" : "bg-gray-300 text-black"
+            }`}
+          >
+            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+          </button>
 
-        <h2 className="text-xl font-semibold mb-2">Similar Movies</h2>
+          <button
+            onClick={handleWatchlist}
+            className={`px-4 py-2 rounded ${
+              isInWatchlist
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-black"
+            }`}
+          >
+            {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+          </button>
+        </div>
+
+        <h2 className="text-xl font-semibold mb-2 mt-6">Similar Movies</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {similarMovies.map((movie) => (
             <MovieCard

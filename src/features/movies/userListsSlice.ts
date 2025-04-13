@@ -9,10 +9,12 @@ interface Movie {
 
 interface UserListsState {
   favorites: Movie[];
+  watchlist: Movie[];
 }
 
 const initialState: UserListsState = {
   favorites: JSON.parse(localStorage.getItem("favorites") || "[]"),
+  watchlist: JSON.parse(localStorage.getItem("watchlist") || "[]"),
 };
 
 const userListsSlice = createSlice({
@@ -32,8 +34,21 @@ const userListsSlice = createSlice({
       }
       localStorage.setItem("favorites", JSON.stringify(state.favorites));
     },
+    toggleWatchlist: (state, action: PayloadAction<Movie>) => {
+      const exists = state.watchlist.some(
+        (movie) => movie.id === action.payload.id
+      );
+      if (exists) {
+        state.watchlist = state.watchlist.filter(
+          (movie) => movie.id !== action.payload.id
+        );
+      } else {
+        state.watchlist.push(action.payload);
+      }
+      localStorage.setItem("watchlist", JSON.stringify(state.watchlist));
+    },
   },
 });
 
-export const { toggleFavorite } = userListsSlice.actions;
+export const { toggleFavorite, toggleWatchlist } = userListsSlice.actions;
 export default userListsSlice.reducer;

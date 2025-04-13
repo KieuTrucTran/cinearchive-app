@@ -9,6 +9,7 @@ import SearchPage from "./routes/SearchPage";
 import MoviesPage from "./routes/MoviesPage";
 import MovieDetailPage from "./routes/MovieDetailPage";
 import FavoritesPage from "./routes/FavoritesPage";
+import WatchlistPage from "./routes/WatchlistPage";
 
 import "./index.css";
 import { store } from "./store"; // central state management object of the app
@@ -28,6 +29,7 @@ root.render(
             {/* <Route path=":movieId" element={<Detail />} /> */}
             <Route path="movie/:movieId" element={<MovieDetailPage />} />
             <Route path="favorites" element={<FavoritesPage />} />
+            <Route path="watchlist" element={<WatchlistPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
