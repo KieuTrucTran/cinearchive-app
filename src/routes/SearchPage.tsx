@@ -36,7 +36,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 lg:px-12 pb-20">
+    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20">
       <div className="mb-12 flex items-center justify-center">
         <div className="flex items-center space-x-4">
           <input

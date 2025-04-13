@@ -5,14 +5,14 @@ import { Link, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/storeHook";
 
 const Header = () => {
-  const { darkTheme } = useAppSelector((state) => state);
+  const darkTheme = useAppSelector((state) => state.darkTheme);
 
   const dispatch = useAppDispatch();
 
   const onToggle = () => dispatch(toggleTheme());
 
   return (
-    <header className="mb-20">
+    <header className="bg-white dark:bg-gray-900 text-black dark:text-white">
       <nav className="border-b border-gray-200 border-opacity-25 py-2.5">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link to="/" className="flex items-center">

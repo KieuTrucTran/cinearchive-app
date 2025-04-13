@@ -78,7 +78,7 @@ const MovieDetailPage = () => {
     : "N/A";
 
   return (
-    <div className="min-h-screen px-4 lg:px-12 pb-20 flex flex-col lg:flex-row items-start">
+    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20 flex flex-col lg:flex-row items-start">
       <img
         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
         alt={movie.title}
