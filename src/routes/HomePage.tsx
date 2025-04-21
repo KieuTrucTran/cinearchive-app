@@ -31,7 +31,7 @@ function HomePage() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20">
+    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
       {/* Trending Section */}
       <h2 className="text-2xl font-bold mb-6">Trending</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">

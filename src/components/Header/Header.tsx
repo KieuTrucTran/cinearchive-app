@@ -4,6 +4,7 @@ import { toggleTheme } from "../../features/theme/themeSlice";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/storeHook";
+import Drawer from "../Drawer/Drawer";
 
 const Header = () => {
   const darkTheme = useAppSelector((state) => state.darkTheme);
@@ -71,81 +72,70 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu (Slide-In) */}
-      {mobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-
-          {/* Drawer */}
-          <div className="fixed top-0 right-0 z-50 w-64 h-full bg-light-accentBackground dark:bg-dark-accentBackground shadow-lg transform transition-transform duration-300 translate-x-0 flex flex-col justify-start">
-            {/* Top Row: Toggle + Close */}
-            <div className="flex justify-between items-center p-4">
-              {/* Theme Toggle (Mobile only) */}
-              <div className="block md:hidden">
-                {darkTheme ? (
-                  <SunIcon
-                    onClick={onToggle}
-                    className="h-5 w-5 cursor-pointer hover:opacity-50 text-light-accent dark:text-dark-accent"
-                  />
-                ) : (
-                  <MoonIcon
-                    onClick={onToggle}
-                    className="h-5 w-5 cursor-pointer hover:opacity-50 text-light-accent dark:text-dark-accent"
-                  />
-                )}
-              </div>
-
-              {/* Close button */}
-              <button onClick={() => setMobileMenuOpen(false)}>
-                <XMarkIcon className="h-6 w-6 text-light-accent dark:text-dark-accent" />
-              </button>
-            </div>
-
-            {/* Navigation Links */}
-            <div className="flex flex-col items-end px-6 space-y-4 text-sm font-medium">
-              <Link
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:opacity-50"
-              >
-                Home
-              </Link>
-              <Link
-                to="/movies"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:opacity-50 font-semibold"
-              >
-                Movies
-              </Link>
-              <Link
-                to="/favorites"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:opacity-50"
-              >
-                Favorites
-              </Link>
-              <Link
-                to="/watchlist"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:opacity-50"
-              >
-                Watchlist
-              </Link>
-              <Link
-                to="/search"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:opacity-50"
-              >
-                Search
-              </Link>
-            </div>
+      {/* Mobile Menu */}
+      <Drawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
+        {/* Top Row: Toggle + Close */}
+        <div className="flex justify-between items-center p-4">
+          {/* Theme Toggle (Mobile only) */}
+          <div className="block md:hidden">
+            {darkTheme ? (
+              <SunIcon
+                onClick={onToggle}
+                className="h-5 w-5 cursor-pointer hover:opacity-50 text-light-accent dark:text-dark-accent"
+              />
+            ) : (
+              <MoonIcon
+                onClick={onToggle}
+                className="h-5 w-5 cursor-pointer hover:opacity-50 text-light-accent dark:text-dark-accent"
+              />
+            )}
           </div>
-        </>
-      )}
+
+          {/* Close button */}
+          <button onClick={() => setMobileMenuOpen(false)}>
+            <XMarkIcon className="h-6 w-6 text-light-accent dark:text-dark-accent" />
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <div className="flex flex-col items-end px-6 space-y-4 text-sm font-medium">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:opacity-50"
+          >
+            Home
+          </Link>
+          <Link
+            to="/movies"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:opacity-50 font-semibold"
+          >
+            Movies
+          </Link>
+          <Link
+            to="/favorites"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:opacity-50"
+          >
+            Favorites
+          </Link>
+          <Link
+            to="/watchlist"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:opacity-50"
+          >
+            Watchlist
+          </Link>
+          <Link
+            to="/search"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:opacity-50"
+          >
+            Search
+          </Link>
+        </div>
+      </Drawer>
 
       <Outlet />
     </header>
