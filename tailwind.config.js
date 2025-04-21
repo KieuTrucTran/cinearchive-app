@@ -1,12 +1,34 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class",
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  darkMode: "class", // Enable dark mode
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        light: {
+          text: "#000000",
+          accent: {
+            DEFAULT: "#86443D",
+            80: "rgba(134, 68, 61, 0.8)",
+          },
+          background: "#EDE8DF",
+          accentBackground: "#E2DED7",
+        },
+        dark: {
+          text: "#FFFFFF",
+          accent: {
+            DEFAULT: "#FFC25F",
+            80: "rgba(255, 194, 95, 0.8)",
+          },
+          background: "#424C55",
+          accentBackground: "#38424B",
+        },
+      },
+      fontFamily: {
+        title: ["Playfair Display", "serif"],
+        text: ["Inter", "sans-serif"],
+      },
+    },
   },
   plugins: [],
-}
-
+};

@@ -41,7 +41,11 @@ const MovieCard: FC<MovieCardProps> = ({
       <Link to={`/movie/${id}`}>
         <div className="max-w-xs bg-white mx-auto rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:-translate-y-2 duration-200 cursor-pointer">
           <img
-            src={`https://image.tmdb.org/t/p/original${poster_path}`}
+            src={
+              poster_path
+                ? `https://image.tmdb.org/t/p/original${poster_path}`
+                : "/no_poster.png"
+            }
             alt={title}
             loading="lazy"
             className="rounded-t-lg w-full object-cover"

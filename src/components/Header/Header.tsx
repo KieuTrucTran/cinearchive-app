@@ -12,36 +12,48 @@ const Header = () => {
   const onToggle = () => dispatch(toggleTheme());
 
   return (
-    <header className="bg-white dark:bg-gray-900 text-black dark:text-white">
-      <nav className="border-b border-gray-200 border-opacity-25 py-2.5">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link to="/" className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap">
-              CineArchive
-            </span>
-          </Link>
-          <Link to="/movies" className="text-black-500 hover:underline">
-            Movies
-          </Link>
-          <Link to="/favorites" className="text-black-500 hover:underline">
-            Favorites
-          </Link>
-          <Link to="/watchlist" className="text-black-500 hover:underline">
-            Watchlist
-          </Link>
-          <Link to="/search" className="text-black-500 hover:underline">
-            Search
-          </Link>
-          <div className="flex items-center lg:order-2">
+    <header className="bg-light-accentBackground dark:bg-dark-accentBackground text-light-accent dark:text-dark-accent">
+      <nav className="border-b border-light-accent dark:border-dark-accent py-2.5">
+        <div className="mx-auto max-w-screen-xl 2xl:max-w-screen-2xl px-4 flex items-center">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center space-x-2">
+              <span className="text-lg font-semibold whitespace-nowrap">
+                ◱ CineArchive
+              </span>
+            </Link>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex justify-center flex-grow items-center space-x-10 text-sm font-medium">
+            <Link to="/" className="hover:opacity-50">
+              Home
+            </Link>
+            <Link to="/movies" className="hover:opacity-50 font-semibold">
+              Movies
+            </Link>
+            <Link to="/favorites" className="hover:opacity-50">
+              Favorites
+            </Link>
+            <Link to="/watchlist" className="hover:opacity-50">
+              Watchlist
+            </Link>
+            <Link to="/search" className="hover:opacity-50">
+              Search
+            </Link>
+          </div>
+
+          {/* Theme Toggle */}
+          <div className="flex-shrink-0">
             {darkTheme ? (
               <SunIcon
                 onClick={onToggle}
-                className="h-6 w-6 hover:opacity-50 cursor-pointer"
+                className="h-5 w-5 cursor-pointer hover:opacity-50"
               />
             ) : (
               <MoonIcon
                 onClick={onToggle}
-                className="h-6 w-6 hover:opacity-50 cursor-pointer"
+                className="h-5 w-5 cursor-pointer hover:opacity-50"
               />
             )}
           </div>
