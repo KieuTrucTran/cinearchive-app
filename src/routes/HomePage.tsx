@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
-import MovieCard from "../components/MovieCard/MovieCard";
+import TrendingSlider from "../components/Slider/TrendingSlider";
+import MovieSection from "../components/MovieSection/MovieSection";
 import {
   getTrendingMovies,
   getPopularMovies,
@@ -30,75 +31,35 @@ function HomePage() {
     return <div>Loading movies...</div>;
   }
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
       {/* Trending Section */}
-      <h2 className="text-2xl font-bold mb-6">Trending</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {trending.map((movie) => {
-          const { id, title, overview, poster_path } = movie;
-          return (
-            <MovieCard
-              key={id}
-              id={id}
-              title={title}
-              poster_path={poster_path}
-              release_date={movie.release_date}
-            />
-          );
-        })}
-      </div>
+      <TrendingSlider movies={trending} />
 
       {/* Popular Section */}
-      <h2 className="text-2xl font-bold mb-6">Popular</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {popular.map((movie) => {
-          const { id, title, overview, poster_path } = movie;
-          return (
-            <MovieCard
-              key={id}
-              id={id}
-              title={title}
-              poster_path={poster_path}
-              release_date={movie.release_date}
-            />
-          );
-        })}
-      </div>
+      <MovieSection
+        title="Popular Movies"
+        movies={popular}
+        onSeeMore={() => console.log("Load more popular movies")}
+      />
 
       {/* Top Rated Section */}
-      <h2 className="text-2xl font-bold mb-6">Top Rated</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {topRated.map((movie) => {
-          const { id, title, overview, poster_path } = movie;
-          return (
-            <MovieCard
-              key={id}
-              id={id}
-              title={title}
-              poster_path={poster_path}
-              release_date={movie.release_date}
-            />
-          );
-        })}
-      </div>
+      <MovieSection
+        title="Top Rated Movies"
+        movies={topRated}
+        onSeeMore={() => console.log("Load more top-rated movies")}
+      />
 
       {/* Upcoming Section */}
-      <h2 className="text-2xl font-bold mb-6">Upcoming</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {upcoming.map((movie) => {
-          const { id, title, overview, poster_path } = movie;
-          return (
-            <MovieCard
-              key={id}
-              id={id}
-              title={title}
-              poster_path={poster_path}
-              release_date={movie.release_date}
-            />
-          );
-        })}
-      </div>
+      <MovieSection
+        title="Upcoming Movies"
+        movies={upcoming}
+        onSeeMore={() => console.log("Load more upcoming movies")}
+      />
     </div>
   );
 }
