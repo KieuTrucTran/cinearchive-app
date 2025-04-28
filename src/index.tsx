@@ -10,7 +10,9 @@ import MoviesPage from "./routes/MoviesPage";
 import MovieDetailPage from "./routes/MovieDetailPage";
 import FavoritesPage from "./routes/FavoritesPage";
 import WatchlistPage from "./routes/WatchlistPage";
-import MovieListPage from "./routes/MovieListPage";
+import PopularMoviesPage from "./routes/MovieLists/PopularMoviesPage";
+import UpcomingMoviesPage from "./routes/MovieLists/UpcomingMoviesPage";
+import TopRatedMoviesPage from "./routes/MovieLists/TopRatedMoviesPage";
 
 import "./index.css";
 import { store } from "./store"; // central state management object of the app
@@ -46,8 +48,9 @@ root.render(
               <Route path="movie/:movieId" element={<MovieDetailPage />} />
               <Route path="favorites" element={<FavoritesPage />} />
               <Route path="watchlist" element={<WatchlistPage />} />
-              <Route path="movies" element={<MovieListPage />} />{" "}
-              {/* Add this */}
+              <Route path="movie/popular" element={<PopularMoviesPage />} />
+              <Route path="movie/upcoming" element={<UpcomingMoviesPage />} />
+              <Route path="movie/top-rated" element={<TopRatedMoviesPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

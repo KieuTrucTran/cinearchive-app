@@ -46,21 +46,21 @@ function HomePage() {
       <MovieSection
         title="Popular Movies"
         movies={popular}
-        onSeeMore={() => navigate("/movies?type=popular")}
+        onSeeMore={() => navigate("/movie/popular")}
       />
 
       {/* Top Rated Section */}
       <MovieSection
         title="Top Rated Movies"
         movies={topRated}
-        onSeeMore={() => navigate("/movies?type=top-rated")}
+        onSeeMore={() => navigate("/movie/top-rated")}
       />
 
       {/* Upcoming Section */}
       <MovieSection
         title="Upcoming Movies"
         movies={upcoming}
-        onSeeMore={() => navigate("/movies?type=upcoming")}
+        onSeeMore={() => navigate("/movie/upcoming")}
       />
     </div>
   );
