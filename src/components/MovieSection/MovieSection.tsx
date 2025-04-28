@@ -1,5 +1,7 @@
 import React from "react";
 import MovieCard from "../MovieCard/MovieCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 interface MovieSectionProps {
   title: string;
@@ -25,17 +27,18 @@ const MovieSection: React.FC<MovieSectionProps> = ({
           See More
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+      <Swiper spaceBetween={20} slidesPerView={5} className="w-full">
         {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            poster_path={movie.poster_path}
-            release_date={movie.release_date}
-          />
+          <SwiperSlide key={movie.id}>
+            <MovieCard
+              id={movie.id}
+              title={movie.title}
+              poster_path={movie.poster_path}
+              release_date={movie.release_date}
+            />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 };

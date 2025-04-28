@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
+import { useNavigate } from "react-router-dom";
 import TrendingSlider from "../components/Slider/TrendingSlider";
 import MovieSection from "../components/MovieSection/MovieSection";
 import {
@@ -19,6 +20,7 @@ function HomePage() {
     error,
   } = useAppSelector((state) => state.movies);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getTrendingMovies());
@@ -44,21 +46,21 @@ function HomePage() {
       <MovieSection
         title="Popular Movies"
         movies={popular}
-        onSeeMore={() => console.log("Load more popular movies")}
+        onSeeMore={() => navigate("/movies?type=popular")}
       />
 
       {/* Top Rated Section */}
       <MovieSection
         title="Top Rated Movies"
         movies={topRated}
-        onSeeMore={() => console.log("Load more top-rated movies")}
+        onSeeMore={() => navigate("/movies?type=top-rated")}
       />
 
       {/* Upcoming Section */}
       <MovieSection
         title="Upcoming Movies"
         movies={upcoming}
-        onSeeMore={() => console.log("Load more upcoming movies")}
+        onSeeMore={() => navigate("/movies?type=upcoming")}
       />
     </div>
   );
