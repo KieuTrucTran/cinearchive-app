@@ -21,7 +21,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
 }) => {
   return (
     <div className="mb-10">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center my-6">
         <h2 className="text-2xl font-bold">{title}</h2>
         <button onClick={onSeeMore} className="text-light-accent dark:text-dark-accent hover:opacity-50">
           See More

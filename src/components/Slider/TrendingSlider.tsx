@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import "swiper/css/autoplay";
+import { Autoplay } from "swiper/modules";
+import { Link } from "react-router-dom";
 
 interface TrendingSliderProps {
   movies: {
@@ -9,53 +11,70 @@ interface TrendingSliderProps {
     title: string;
     overview: string;
     poster_path: string;
+    backdrop_path?: string;
     homepage?: string;
   }[];
 }
 
 const TrendingSlider: React.FC<TrendingSliderProps> = ({ movies }) => {
   return (
-    <div className="w-full bg-light-background dark:bg-dark-background pb-6">
-      {/* Title */}
-      <h2 className="text-2xl font-bold py-6">
-        Trending
-      </h2>
-
-      {/* Slider */}
-      <Swiper spaceBetween={20} slidesPerView={1} className="w-full">
+    <div className="relative w-full h-screen">
+      <Swiper
+        modules={[Autoplay]}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+        centeredSlides={true}
+        slidesPerView={1}
+        className="w-full h-full"
+      >
         {movies.map((movie) => (
-          <SwiperSlide key={movie.id}>
-            <div className="flex flex-col lg:flex-row items-center justify-center bg-light-accentBackground dark:bg-dark-accentBackground p-12 rounded-lg mx-auto">
-              {/* Poster */}
+          <SwiperSlide
+            key={movie.id}
+            className="relative flex items-center justify-evenly min-h-screen px-8 lg:px-16"
+            style={{
+              backgroundImage: `url(https://image.tmdb.org/t/p/original${
+                movie.backdrop_path || movie.poster_path
+              })`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            {/* Overlay for better text visibility */}
+            <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+            {/* Left Section: Poster */}
+            <div className="relative z-10 hidden lg:block">
               <img
                 src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                 alt={movie.title}
-                className="w-full lg:w-1/3 rounded-lg object-cover"
+                className="w-80 rounded-lg shadow-lg"
               />
-              {/* Content */}
-              <div className="lg:ml-8 mt-6 lg:mt-0 text-center lg:text-left">
-                <h3 className="text-3xl font-bold text-light-text dark:text-dark-text">
-                  {movie.title}
-                </h3>
-                <p className="text-gray-700 dark:text-gray-300 mt-4">
-                  {movie.overview}
-                </p>
-                <div className="mt-6 flex justify-center lg:justify-start space-x-4">
-                  <Link
-                    to={`/movie/${movie.id}`}
-                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  >
-                    Details
-                  </Link>
-                  <a
-                    href={movie.homepage || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                  >
-                    Watch Trailer
-                  </a>
-                </div>
+            </div>
+
+            {/* Right Section: Title and Description */}
+            <div className="relative z-10 text-white max-w-lg space-y-6">
+              <h1 className="text-4xl lg:text-6xl font-bold">{movie.title}</h1>
+              <p className="text-lg lg:text-xl text-gray-300">
+                {movie.overview}
+              </p>
+              <div className="flex space-x-4">
+                <Link
+                  to={`/movie/${movie.id}`}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Watch Now
+                </Link>
+                <a
+                  href={movie.homepage || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                >
+                  Trailer
+                </a>
               </div>
             </div>
           </SwiperSlide>

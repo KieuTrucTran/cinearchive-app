@@ -38,30 +38,34 @@ function HomePage() {
   }
 
   return (
-    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
-      {/* Trending Section */}
-      <TrendingSlider movies={trending} />
+    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen">
+      <div>
+        {/* Trending Section */}
+        <TrendingSlider movies={trending} />
+      </div>
 
-      {/* Popular Section */}
-      <MovieSection
-        title="Popular Movies"
-        movies={popular}
-        onSeeMore={() => navigate("/movie/popular")}
-      />
+      <div className="px-4 lg:px-12 pb-20">
+        {/* Popular Section */}
+        <MovieSection
+          title="Popular Movies"
+          movies={popular}
+          onSeeMore={() => navigate("/movie/popular")}
+        />
 
-      {/* Top Rated Section */}
-      <MovieSection
-        title="Top Rated Movies"
-        movies={topRated}
-        onSeeMore={() => navigate("/movie/top-rated")}
-      />
+        {/* Top Rated Section */}
+        <MovieSection
+          title="Top Rated Movies"
+          movies={topRated}
+          onSeeMore={() => navigate("/movie/top-rated")}
+        />
 
-      {/* Upcoming Section */}
-      <MovieSection
-        title="Upcoming Movies"
-        movies={upcoming}
-        onSeeMore={() => navigate("/movie/upcoming")}
-      />
+        {/* Upcoming Section */}
+        <MovieSection
+          title="Upcoming Movies"
+          movies={upcoming}
+          onSeeMore={() => navigate("/movie/upcoming")}
+        />
+      </div>
     </div>
   );
 }
