@@ -6,7 +6,10 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          text: "#000000",
+          text: {
+            DEFAULT: "#000000",
+            50: "rgba(0, 0, 0, 0.5)",
+          },
           accent: {
             DEFAULT: "#86443D",
             80: "rgba(134, 68, 61, 0.8)",
@@ -15,7 +18,10 @@ module.exports = {
           accentBackground: "#E2DED7",
         },
         dark: {
-          text: "#FFFFFF",
+          text: {
+            DEFAULT: "#FFFFFF",
+            50: "rgba(255, 255, 255, 0.5)",
+          },
           accent: {
             DEFAULT: "#FFC25F",
             80: "rgba(255, 194, 95, 0.8)",

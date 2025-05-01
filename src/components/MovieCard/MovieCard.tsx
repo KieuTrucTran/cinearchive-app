@@ -1,4 +1,3 @@
-/* Display individual movie details */
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/storeHook";
@@ -6,6 +5,11 @@ import {
   toggleFavorite,
   toggleWatchlist,
 } from "../../features/movies/userListsSlice";
+import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  BookmarkIcon as SolidBookmarkIcon,
+  HeartIcon as SolidHeartIcon,
+} from "@heroicons/react/24/solid";
 
 interface MovieCardProps {
   poster_path: string;
@@ -34,12 +38,11 @@ const MovieCard: FC<MovieCardProps> = ({
     dispatch(toggleWatchlist({ id, title, poster_path, release_date }));
   };
 
-  const year = release_date ? new Date(release_date).getFullYear() : "N/A";
-
   return (
-    <div>
+    <div className="relative group max-w-xs mx-auto">
+      {/* Movie Card */}
       <Link to={`/movie/${id}`}>
-        <div className="max-w-xs bg-white mx-auto rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:-translate-y-2 duration-200 cursor-pointer">
+        <div className="rounded-lg overflow-hidden hover:outline hover:outline-2 hover:outline-light-accent dark:hover:outline-dark-accent transition duration-200">
           <img
             src={
               poster_path
@@ -48,33 +51,37 @@ const MovieCard: FC<MovieCardProps> = ({
             }
             alt={title}
             loading="lazy"
-            className="rounded-t-lg w-full object-cover"
+            className="w-full h-auto object-cover"
           />
-          <div className="p-3">
-            <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-              {title}
-            </h5>
-            <p className="text-sm text-gray-700 dark:text-gray-400">{year}</p>
-          </div>
         </div>
       </Link>
-      <div className="flex justify-center mt-2">
-        <button
-          onClick={handleFavorite}
-          className={`px-4 py-2 rounded ${
-            isFavorite ? "bg-red-500 text-white" : "bg-gray-300 text-black"
-          }`}
-        >
-          {isFavorite ? "Unfavorite" : "Favorite"}
+
+      {/* Icons (Bookmark and Heart) */}
+      <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black bg-opacity-50 p-1 rounded">
+        <button onClick={handleWatchlist} className="hover:opacity-80">
+          {isInWatchlist ? (
+            <SolidBookmarkIcon className="h-6 w-6 text-white" />
+          ) : (
+            <BookmarkIcon className="h-6 w-6 text-white" />
+          )}
         </button>
-        <button
-          onClick={handleWatchlist}
-          className={`px-4 py-2 rounded ${
-            isInWatchlist ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
-          }`}
-        >
-          {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+        <button onClick={handleFavorite} className="hover:opacity-80">
+          {isFavorite ? (
+            <SolidHeartIcon className="h-6 w-6 text-red-500 dark:text-dark-accent" />
+          ) : (
+            <HeartIcon className="h-6 w-6 text-red-500 dark:text-dark-accent" />
+          )}
         </button>
+      </div>
+
+      {/* Movie Title */}
+      <div className="mt-2 text-center">
+        <h5 className="text-lg font-bold text-light-text dark:text-dark-text">
+          {title}
+        </h5>
+        <p className="text-sm text-light-text-50 dark:text-dark-text-50">
+          {release_date ? new Date(release_date).getFullYear() : "N/A"}
+        </p>
       </div>
     </div>
   );

@@ -23,11 +23,18 @@ const MovieSection: React.FC<MovieSectionProps> = ({
     <div className="mb-10">
       <div className="flex justify-between items-center my-6">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <button onClick={onSeeMore} className="text-light-accent dark:text-dark-accent hover:opacity-50">
+        <button
+          onClick={onSeeMore}
+          className="text-light-accent dark:text-dark-accent hover:opacity-50"
+        >
           See More
         </button>
       </div>
-      <Swiper spaceBetween={20} slidesPerView={5} className="w-full">
+      <Swiper
+        spaceBetween={20}
+        slidesPerView={5}
+        className="w-full overflow-visible"
+      >
         {movies.map((movie) => (
           <SwiperSlide key={movie.id}>
             <MovieCard
