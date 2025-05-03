@@ -33,7 +33,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
       <Swiper
         spaceBetween={20}
         slidesPerView={5}
-        className="w-full overflow-visible"
+        className="w-full p-1"
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie.id}>

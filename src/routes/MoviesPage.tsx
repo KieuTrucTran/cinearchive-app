@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchMoviesWithFilters, fetchGenres } from "../api/movieApi";
 import MovieCard from "../components/MovieCard/MovieCard";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 function MoviesPage() {
   const [movies, setMovies] = useState<
@@ -67,23 +68,24 @@ function MoviesPage() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20">
-      <div className="mb-6">
+    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
+      <div className="pt-8 pb-2 flex justify-end items-center space-x-4">
+        <span className="text-sm font-semibold">Sort by</span>
         <label>
-          Sort By:
           <select
             onChange={(e) => handleFilterChange("sort_by", e.target.value)}
             value={pendingFilters.sort_by}
+            className="bg-light-background dark:bg-dark-background"
           >
             <option value="popularity.desc">Popularity</option>
             <option value="vote_average.desc">Top Rated</option>
           </select>
         </label>
         <label>
-          Genre:
           <select
             onChange={(e) => handleFilterChange("with_genres", e.target.value)}
             value={pendingFilters.with_genres}
+            className="bg-light-background dark:bg-dark-background"
           >
             <option value="">All Genres</option>
             {genres.map((genre) => (
@@ -93,13 +95,13 @@ function MoviesPage() {
             ))}
           </select>
         </label>
-        <button
+        <MagnifyingGlassIcon
           onClick={applyFilters}
-          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Search
-        </button>
+          className="h-5 w-5 cursor-pointer hover:opacity-50"
+        />
       </div>
+      <div className="w-full border-b-2 border-light-text dark:border-dark-text mb-6"></div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {movies.map((movie) => (
           <MovieCard
