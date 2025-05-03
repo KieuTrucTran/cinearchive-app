@@ -113,18 +113,39 @@ function MoviesPage() {
           />
         ))}
       </div>
-      <div className="flex justify-center mt-6">
+      <div className="w-full border-b-2 border-light-text dark:border-dark-text mt-12"></div>
+      <div className="flex justify-center items-center mt-4 space-x-4">
         <button
           onClick={() => handlePageChange("prev")}
           disabled={filters.page === 1}
-          className="px-4 py-2 bg-gray-500 text-white rounded disabled:opacity-50"
+          className="px-4 py-1 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded hover:bg-light-accent duration-300 dark:hover:bg-dark-accent disabled:opacity-50"
         >
           Previous
         </button>
-        <span>Page {filters.page}</span>
+        <div className="flex space-x-2">
+          {filters.page > 1 && (
+            <span
+              onClick={() =>
+                setFilters((prev) => ({ ...prev, page: filters.page - 1 }))
+              }
+              className="cursor-pointer opacity-70 hover:opacity-100"
+            >
+              {filters.page - 1}
+            </span>
+          )}
+          <span className="font-bold opacity-100">{filters.page}</span>
+          <span
+            onClick={() =>
+              setFilters((prev) => ({ ...prev, page: filters.page + 1 }))
+            }
+            className="cursor-pointer opacity-70 hover:opacity-100"
+          >
+            {filters.page + 1}
+          </span>
+        </div>
         <button
           onClick={() => handlePageChange("next")}
-          className="px-4 py-2 bg-gray-500 text-white rounded"
+          className="px-4 py-1 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded hover:bg-light-accent duration-300 dark:hover:bg-dark-accent"
         >
           Next
         </button>
