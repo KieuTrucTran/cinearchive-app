@@ -32,7 +32,12 @@ const MovieSection: React.FC<MovieSectionProps> = ({
       </div>
       <Swiper
         spaceBetween={20}
-        slidesPerView={5}
+        slidesPerView={2}
+        breakpoints={{
+          640: { slidesPerView: 3 },
+          768: { slidesPerView: 4 },
+          1024: { slidesPerView: 5 },
+        }}
         className="w-full p-1"
       >
         {movies.map((movie) => (
