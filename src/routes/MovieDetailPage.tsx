@@ -14,6 +14,11 @@ import {
 import { fetchMovieVideos } from "../api/movieApi";
 import Modal from "../components/Modal/Modal";
 import MovieCard from "../components/MovieCard/MovieCard";
+import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  BookmarkIcon as SolidBookmarkIcon,
+  HeartIcon as SolidHeartIcon,
+} from "@heroicons/react/24/solid";
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
@@ -99,79 +104,125 @@ const MovieDetailPage = () => {
 
   return (
     <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
-      <img
-        src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-        alt={movie.title}
-        className="w-full lg:w-1/3 rounded-lg mb-6 lg:mb-0"
-      />
-      <div className="lg:ml-8">
-        <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
-        <p className="text-gray-700 dark:text-gray-300 mb-4">Year: {year}</p>
-        <h2 className="text font-bold mb-4">{movie.tagline}</h2>
-        <p className="text-gray-700 dark:text-gray-300 mb-6">
-          {movie.overview}
-        </p>
-
-        <h2 className="text-xl font-semibold mb-2">Genres</h2>
-        <ul className="list-disc list-inside mb-6">
-          {movie.genres.map((genre) => (
-            <li key={genre.id}>{genre.name}</li>
-          ))}
-        </ul>
-
-        <h2 className="text-xl font-semibold mb-2">Cast</h2>
-        <ul className="list-disc list-inside mb-6">
-          {credits.slice(0, 5).map((cast) => (
-            <li key={cast.id}>
-              {cast.name} as {cast.character}
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="text-xl font-semibold mb-2">Watch Providers</h2>
-        <ul className="list-disc list-inside mb-6">
-          {providers && providers.US && providers.US.flatrate ? (
-            providers.US.flatrate.map(
-              (provider: { provider_id: number; provider_name: string }) => (
-                <li key={provider.provider_id}>{provider.provider_name}</li>
-              )
-            )
-          ) : (
-            <li>No providers available</li>
-          )}
-        </ul>
-
-        <button
-          onClick={handleTrailerClick}
-          className="px-4 py-2 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded-lg hover:bg-light-accent duration-300 dark:hover:bg-dark-accent"
-        >
-          Watch Trailer
-        </button>
-
-        <div className="flex gap-4 mt-4">
-          <button
-            onClick={handleFavorite}
-            className={`px-4 py-2 rounded ${
-              isFavorite ? "bg-red-500 text-white" : "bg-gray-300 text-black"
-            }`}
-          >
-            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-          </button>
-
-          <button
-            onClick={handleWatchlist}
-            className={`px-4 py-2 rounded ${
-              isInWatchlist
-                ? "bg-blue-500 text-white"
-                : "bg-gray-300 text-black"
-            }`}
-          >
-            {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
-          </button>
+      <div className="flex flex-col lg:flex-row gap-8 pt-8">
+        {/* Left Section: Movie Poster */}
+        <div className="lg:w-1/4">
+          <img
+            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+            alt={movie.title}
+            className="w-full rounded-lg mb-6"
+          />
         </div>
 
-        <h2 className="text-xl font-semibold mb-2 mt-6">Similar Movies</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Right Section: Movie Details */}
+        <div className="flex-1">
+          {/* Title, Year, and Director */}
+          <div className="mb-6">
+            <h1 className="text-4xl font-bold">{movie.title}</h1>
+            <p className="text-lg text-gray-700 dark:text-gray-300">
+              {year} Directed by {"Unknown"}
+            </p>
+          </div>
+
+          {/* Tagline */}
+          <h2 className="text-xl font-semibold italic mb-4">{movie.tagline}</h2>
+
+          {/* Overview */}
+          <p className="text-gray-700 dark:text-gray-300 mb-6">
+            {movie.overview}
+          </p>
+
+          {/* Divider */}
+          <div className="w-full border-b-2 border-light-text dark:border-dark-text mb-6"></div>
+
+          {/* Genres */}
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-2">Genre</h2>
+            <ul className="flex flex-wrap gap-2">
+              {movie.genres.map((genre) => (
+                <li
+                  key={genre.id}
+                  className="px-3 py-1 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded-full text-sm"
+                >
+                  {genre.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Watch Providers */}
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-2">Where to Watch</h2>
+            <ul className="list-disc list-inside">
+              {providers && providers.US && providers.US.flatrate ? (
+                providers.US.flatrate.map(
+                  (provider: {
+                    provider_id: number;
+                    provider_name: string;
+                  }) => (
+                    <li key={provider.provider_id}>{provider.provider_name}</li>
+                  )
+                )
+              ) : (
+                <li>No providers available</li>
+              )}
+            </ul>
+          </div>
+
+          {/* Actions: Trailer, Bookmark, and Favorite */}
+          <div className="flex items-center gap-4 mb-6">
+            <button
+              onClick={handleTrailerClick}
+              className="px-4 py-2 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded-lg hover:bg-light-accent dark:hover:bg-dark-accent"
+            >
+              Watch Trailer
+            </button>
+            <div className="flex items-center gap-x-3 p-2 px-3 bg-light-accentBackground dark:bg-dark-accentBackground rounded-lg">
+              <button onClick={handleWatchlist} className="hover:opacity-80">
+                {isInWatchlist ? (
+                  <SolidBookmarkIcon className="h-6 w-6 text-light-text dark:text-dark-text" />
+                ) : (
+                  <BookmarkIcon className="h-6 w-6 text-light-text dark:text-dark-text" />
+                )}
+              </button>
+              <button onClick={handleFavorite} className="hover:opacity-80">
+                {isFavorite ? (
+                  <SolidHeartIcon className="h-6 w-6 text-light-accent-80 dark:text-dark-accent" />
+                ) : (
+                  <HeartIcon className="h-6 w-6 text-light-accent-80 dark:text-dark-accent" />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cast */}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Cast</h2>
+        <div className="flex flex-wrap gap-4">
+          {credits.slice(0, 5).map((cast) => (
+            <div key={cast.id} className="flex flex-col items-center">
+              <img
+                src={`https://image.tmdb.org/t/p/w200${cast.profile_path}`}
+                alt={cast.name}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+              <p className="text-sm font-medium mt-2 text-center">
+                {cast.name}
+              </p>
+              <p className="text-xs text-gray-500 text-center">
+                as {cast.character}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Similar Movies */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold mb-6">Similar Movies</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {similarMovies.map((movie) => (
             <MovieCard
               key={movie.id}
