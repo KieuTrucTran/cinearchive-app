@@ -11,9 +11,9 @@ export const fetchTrendingMovies = async (timeWindow: string = "day") => {
   return response.json();
 };
 
-export const fetchPopularMovies = async () => {
+export const fetchPopularMovies = async (page: number = 1) => {
   const response = await fetch(
-    `${API_BASE_URL}/movie/popular?api_key=${API_KEY}`
+    `${API_BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch popular movies: ${response.statusText}`);
@@ -21,9 +21,9 @@ export const fetchPopularMovies = async () => {
   return response.json();
 };
 
-export const fetchTopRatedMovies = async () => {
+export const fetchTopRatedMovies = async (page: number = 1) => {
   const response = await fetch(
-    `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}`
+    `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}&page=${page}`
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch top-rated movies: ${response.statusText}`);
@@ -31,9 +31,9 @@ export const fetchTopRatedMovies = async () => {
   return response.json();
 };
 
-export const fetchUpcomingMovies = async () => {
+export const fetchUpcomingMovies = async (page: number = 1) => {
   const response = await fetch(
-    `${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}`
+    `${API_BASE_URL}/movie/upcoming?api_key=${API_KEY}&page=${page}`
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch upcoming movies: ${response.statusText}`);
