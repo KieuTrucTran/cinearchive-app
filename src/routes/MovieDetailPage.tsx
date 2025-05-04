@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHook";
 import {
@@ -11,12 +11,9 @@ import {
   toggleFavorite,
   toggleWatchlist,
 } from "../features/movies/userListsSlice";
+import { fetchMovieVideos } from "../api/movieApi";
+import Modal from "../components/Modal/Modal";
 import MovieCard from "../components/MovieCard/MovieCard";
-
-type Genre = {
-  id: number;
-  name: string;
-};
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
@@ -30,6 +27,9 @@ const MovieDetailPage = () => {
     error,
   } = useAppSelector((state) => state.movies);
   const { favorites, watchlist } = useAppSelector((state) => state.userLists);
+
+  const [showModal, setShowModal] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
 
   const isFavorite = favorites.some((movie) => movie.id === Number(movieId));
   const isInWatchlist = watchlist.some((movie) => movie.id === Number(movieId));
@@ -60,6 +60,26 @@ const MovieDetailPage = () => {
     }
   };
 
+  const handleTrailerClick = async () => {
+    if (!movieId) return;
+
+    try {
+      const response = await fetchMovieVideos(Number(movieId));
+      const trailer = response.results.find(
+        (video: { type: string }) => video.type === "Trailer"
+      );
+      if (trailer) {
+        setTrailerUrl(`https://www.youtube.com/embed/${trailer.key}`);
+        setShowModal(true);
+      } else {
+        setTrailerUrl(null);
+        alert("No trailer available");
+      }
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+    }
+  };
+
   useEffect(() => {
     if (movieId) {
       dispatch(getMovieDetails(movieId));
@@ -78,7 +98,7 @@ const MovieDetailPage = () => {
     : "N/A";
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20 flex flex-col lg:flex-row items-start">
+    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
       <img
         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
         alt={movie.title}
@@ -121,16 +141,12 @@ const MovieDetailPage = () => {
           )}
         </ul>
 
-        {movie.homepage && (
-          <a
-            href={movie.homepage}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Watch Trailer
-          </a>
-        )}
+        <button
+          onClick={handleTrailerClick}
+          className="px-4 py-2 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded-lg hover:bg-light-accent duration-300 dark:hover:bg-dark-accent"
+        >
+          Watch Trailer
+        </button>
 
         <div className="flex gap-4 mt-4">
           <button
@@ -167,6 +183,25 @@ const MovieDetailPage = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal for Trailer */}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} title="Trailer">
+          {trailerUrl ? (
+            <iframe
+              width="560"
+              height="315"
+              src={trailerUrl}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <p>No trailer available</p>
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

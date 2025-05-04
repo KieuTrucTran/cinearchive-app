@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { fetchMovieVideos } from "../../api/movieApi";
+import Modal from "../Modal/Modal";
 
 interface TrendingSliderProps {
   movies: {
@@ -12,7 +14,6 @@ interface TrendingSliderProps {
     overview: string;
     poster_path: string;
     backdrop_path?: string;
-    homepage?: string;
   }[];
 }
 
@@ -22,6 +23,9 @@ const preloadImage = (src: string) => {
 };
 
 const TrendingSlider: React.FC<TrendingSliderProps> = ({ movies }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
+
   useEffect(() => {
     movies.forEach((movie) => {
       const imageUrl = `https://image.tmdb.org/t/p/original${
@@ -30,6 +34,24 @@ const TrendingSlider: React.FC<TrendingSliderProps> = ({ movies }) => {
       preloadImage(imageUrl);
     });
   }, [movies]);
+
+  const handleTrailerClick = async (movieId: number) => {
+    try {
+      const response = await fetchMovieVideos(movieId);
+      const trailer = response.results.find(
+        (video: { type: string }) => video.type === "Trailer"
+      );
+      if (trailer) {
+        setTrailerUrl(`https://www.youtube.com/embed/${trailer.key}`);
+        setShowModal(true);
+      } else {
+        setTrailerUrl(null);
+        alert("No trailer available");
+      }
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+    }
+  };
 
   return (
     <div className="relative w-full h-screen">
@@ -85,20 +107,37 @@ const TrendingSlider: React.FC<TrendingSliderProps> = ({ movies }) => {
                   >
                     Watch Now
                   </Link>
-                  <a
-                    href={movie.homepage || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleTrailerClick(movie.id)}
                     className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
                   >
                     Trailer
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Modal for Trailer */}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} title="Trailer">
+          {trailerUrl ? (
+            <iframe
+              width="560"
+              height="315"
+              src={trailerUrl}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <p>No trailer available</p>
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

@@ -119,3 +119,13 @@ export const fetchGenres = async () => {
   }
   return response.json();
 };
+
+export const fetchMovieVideos = async (movieId: number) => {
+  const response = await fetch(
+    `${API_BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie videos: ${response.statusText}`);
+  }
+  return response.json();
+};
