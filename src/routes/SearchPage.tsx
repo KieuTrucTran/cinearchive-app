@@ -36,39 +36,49 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen px-4 lg:px-12 pb-20">
-      <div className="mb-12 flex items-center justify-center">
+    <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen px-4 lg:px-12 pb-20">
+      <div className="py-8 flex items-center justify-center">
         <div className="flex items-center space-x-4">
           <input
             type="search"
             placeholder="Search for movies..."
-            className="block p-3 pl-10 focus:outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+            className="block p-2.5 focus:outline-none text-sm text-light-text dark:text-dark-text bg-light-accentBackground dark:bg-dark-accentBackground rounded-lg border border-gray-400 focus:border-light-accent dark:focus:border-dark-accent placeholder-gray-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
             onClick={handleSearch}
-            className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="ml-4 px-4 py-2 bg-light-accent-80 dark:bg-dark-accent-80 text-light-accentBackground dark:text-dark-accentBackground rounded-lg hover:bg-light-accent dark:hover:bg-dark-accent"
           >
             Search
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {searchResults.length > 0 ? (
-          searchResults.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              id={movie.id}
-              title={movie.title}
-              poster_path={movie.poster_path}
-              release_date={movie.release_date}
-            />
-          ))
-        ) : (
-          <h4>No Movies Found</h4>
-        )}
-      </div>
+      {searchResults.length > 0 ? (
+        <>
+          <div className="text-center pb-2">
+            <div className="text-left font-semibold">
+              Showing matches for <span className="italic">"{searchTerm}"</span>
+            </div>
+          </div>
+          <div className="w-full border-b-2 border-light-text dark:border-dark-text mb-6"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {searchResults.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                id={movie.id}
+                title={movie.title}
+                poster_path={movie.poster_path}
+                release_date={movie.release_date}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="text-center text-lg font-semibold mt-8">
+          No movies found :(
+        </div>
+      )}
     </div>
   );
 };
