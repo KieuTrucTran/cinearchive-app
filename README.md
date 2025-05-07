@@ -1,46 +1,110 @@
-# Getting Started with Create React App
+# CineArchive
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**CineArchive** is a movie discovery web app built with **React**, **Redux**, and **Tailwind CSS**, powered by the [TMDB API](https://www.themoviedb.org/).
+Users can explore trending, popular, top-rated, and upcoming movies, search, filter and sort movies by various criteria, and manage personal favorites and watchlists. The app is responsive and supports dark mode for a modern user experience.
 
-## Available Scripts
+Live Demo
+[cinearchive-app.vercel.app](https://cinearchive-app.vercel.app/)
 
-In the project directory, you can run:
+![CineArchive Live Demo](public/img/CineArchive_liveDemo.gif)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Discover & Explore
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Home Page:** Displays trending movies.
+- **Movies Page:** Browse all movies with filter and sort options (by genre, popularity, rating, etc.).
+- **Search Page:** Search movies by title or keywords.
+- **Movie Detail Page:** Posters, trailers, cast, genres, providers, and similar movies.
 
-### `npm test`
+### State Management
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Global state with **Redux Toolkit**.
+- Favorites & watchlist stored persistently in **localStorage**.
 
-### `npm run build`
+### Theming & UI
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Full **Dark Mode** support (toggleable, persisted).
+- **TailwindCSS**-powered responsive UI with reusable components.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### TMDB API Integration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Supports:
+  - Real-time search
+  - Genre filtering
+  - Trending / Popular / Top Rated / Upcoming endpoints
+  - Movie trailers, cast, and related titles
 
-### `npm run eject`
+### Navigation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Pages: `Home`, `Movies`, `Search`, `Favorites`, `Watchlist`, `Details`
+- Routing with **React Router v6**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Tech Stack
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+| Tech               | Usage                       |
+| ------------------ | --------------------------- |
+| React + TypeScript | Core UI Framework           |
+| React Router       | Routing between pages       |
+| Redux Toolkit      | Global state management     |
+| Tailwind CSS       | Styling & responsive layout |
+| TMDB API           | Movie data & search         |
+| React Icons        | UI icons                    |
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Planned Features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Movie rating & reviews
+- Rewatch, like/dislike system
+- User authentication (login, signup, guest mode)
+- Movie stats & analytics dashboard
+- Personalized recommendation engine
+- **"Movie Decider"** – Random pick from your watchlist
+
+---
+
+## Getting Started
+
+### 1. Clone the repo
+
+```
+git clone https://github.com/yourusername/cinearchive.git
+cd cinearchive
+```
+
+## Local Development
+
+1. Clone the repository
+   ```
+   git clone https://github.com/KieuTrucTran/cinearchive-app.git
+   cd cinearchive
+   ```
+2. Install dependencies
+   ```
+   npm install
+   ```
+3. Set up environment variables
+
+   - Create a `.env` file in the root directory:
+     `REACT_APP_MOVIE_KEY=your_tmdb_api_key`
+   - Get your API key from TMDB.
+
+4. Start development server
+
+   ```
+   npm run dev
+   ```
+
+5. Deployment
+   - App is deployed using [Vercel](https://vercel.com/)
+
+## Resources & Inspirations
+
+- YouTube Tutorial – [Build a Movie App with Redux Toolkit, TypeScript, Tailwind CSS, and React](https://youtu.be/Ha2u6H_Y-Zg?si=hXJ-pQv5skkhLkQW)
+- GitHub repos:
+  - [laribright/movie-app-yt](https://github.com/laribright/movie-app-yt/)
+  - [jameshnl232/Redux-ToolKit-Movies-Streaming-Project](https://github.com/jameshnl232/Redux-ToolKit-Movies-Streaming-Project)
+- TMDB API Docs – [The Movie Database Developer Portal](https://developer.themoviedb.org/docs/getting-started)
